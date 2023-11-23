@@ -10,7 +10,7 @@
 
   <groupId>io.ebean</groupId>
   <artifactId>ebean-migration</artifactId>
-  <version>13.11.2-SNAPSHOT</version>
+  <version>13.11.2-FOC2</version>
 
   <scm>
     <developerConnection>scm:git:git@github.com:ebean-orm/ebean-migration.git</developerConnection>
@@ -156,5 +156,18 @@ mvn install:install-file -Dfile=/some/path/to/ojdbc7.jar -DgroupId=oracle \
     </dependency>
 
   </dependencies>
+
+  <distributionManagement>
+    <repository>
+      <id>foconis-release</id>
+      <name>FOCONIS Release Repository</name>
+      <url>https://mvnrepo.foconis.de/repository/release/</url>
+    </repository>
+    <snapshotRepository>
+      <id>foconis-snapshot</id>
+      <name>FOCONIS Snapshot Repository</name>
+      <url>https://mvnrepo.foconis.de/repository/snapshot/</url>
+    </snapshotRepository>
+  </distributionManagement>
 
 </project>
