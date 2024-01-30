@@ -17,7 +17,7 @@
   <url>https://ebean.io/</url>
 
   <scm>
-    <developerConnection>scm:git:git@github.com:ebean-orm/ebean-migration.git</developerConnection>
+    <developerConnection>scm:git:git@github.com:FOCONIS/ebean-migration.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
