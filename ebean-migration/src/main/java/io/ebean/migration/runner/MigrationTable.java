@@ -62,7 +62,7 @@ final class MigrationTable {
   private MigrationMetaRow lastMigration;
   private LocalMigrationResource priorVersion;
 
-  private final List<MigrationResource> checkMigrations = new ArrayList<>();
+  private final List<MigrationResource> executedMigrations = new ArrayList<>();
 
   /**
    * Version of a dbinit script. When set this means all migration version less than this are ignored.
@@ -392,7 +392,7 @@ final class MigrationTable {
    */
   private void executeMigration(LocalMigrationResource local, String script, int checksum, MigrationMetaRow existing) throws SQLException {
     if (checkStateOnly) {
-      checkMigrations.add(local);
+      executedMigrations.add(local);
       // simulate the migration being run such that following migrations also match
       addMigration(local.key(), createMetaRow(local, checksum, 1));
       return;
@@ -404,6 +404,7 @@ final class MigrationTable {
         log.log(DEBUG, "skip migration {0}", local.location());
       } else {
         exeMillis = executeMigration(local, script);
+
       }
       if (existing != null) {
         existing.rerun(checksum, exeMillis, envUserName, runOn);
@@ -432,6 +433,7 @@ final class MigrationTable {
       scriptRunner.runScript(script, "run migration version: " + local.version());
     }
     executionCount++;
+    executedMigrations.add(local);
     return System.currentTimeMillis() - start;
   }
 
@@ -529,7 +531,7 @@ final class MigrationTable {
       // only patch the legacy checksums once
       initMetaRow.resetChecksum(EARLY_MODE_CHECKSUM, context.connection(), updateChecksumSql);
     }
-    return checkMigrations;
+    return executedMigrations;
   }
 
   private void checkMinVersion() {
@@ -561,7 +563,7 @@ final class MigrationTable {
         break;
       }
     }
-    return checkMigrations;
+    return executedMigrations;
   }
 
   private void runRepeatableInit(List<LocalMigrationResource> localVersions) throws SQLException {
